@@ -22,6 +22,7 @@ public class AvroSchemaDataApplication {
 		String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 		Data dt = new Data();
 		dt.eachColData(dt.getSheet(5));
+		dt.columns.get(0).setColumnName("sdfdsf");
 
 
 
