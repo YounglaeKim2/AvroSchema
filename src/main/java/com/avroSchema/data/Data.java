@@ -6,6 +6,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Data {
 
@@ -13,9 +15,16 @@ public class Data {
     public XSSFSheet sheet;
     public final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 
-    public static class Column_{
-        public String columnName;
-        public boolean nullable;
+
+//    public String columnName;
+//    public boolean nullable;
+//    public String type;
+//    public String lengthValue;
+
+
+    public class Column_{
+        private String columnName;
+        private boolean nullable;
         public String type;
         public String lengthValue;
 
@@ -25,9 +34,73 @@ public class Data {
             this.type = type;
             this.lengthValue = lengthValue;
         }
+
+        public String getColumnName(){
+            return columnName;
+        }
+
+        public void setColumnName(String columnName){
+            this.columnName = columnName;
+        }
+
+        public boolean isNullable() {
+            return nullable;
+        }
+
+        public void setNullable(boolean nullable) {
+            this.nullable = nullable;
+        }
+
+        public String getModel(){
+            return "칼럼명 : " + this.columnName + " | Null 여부 : " + this.nullable + " | 타입 : " + this.type + " | 길이 : " + this.lengthValue;
+        }
     }
 
-    // index 번째 sheet 가져오기
+    public ArrayList<Column_> columns = new ArrayList<Column_>();
+
+//    public class ColumnData{
+
+//    public String columnNameIs(int index, int row){
+//        return getSheet(index).getRow(row).getCell(0).getStringCellValue();
+//    }
+//
+//    public boolean nullableIs(int index, int row){
+//        if(getSheet(index).getRow(row).getCell(3).getStringCellValue().contains("NN")){return false;}
+//        else{return true;}
+//    }
+//
+//    public String typeIs(int index, int row){
+//        return getSheet(index).getRow(row).getCell(5).getStringCellValue();
+//    }
+//
+//    public String lengthValueIs(int index, int row){
+//        return getSheet(index).getRow(row).getCell(6).toString();
+//    }
+//    }
+
+    public void eachColData(XSSFSheet sheet){
+        String columnName;
+        boolean nullable;
+        String type;
+        String lengthValue;
+        for(int i = 9; i < sheet.getPhysicalNumberOfRows(); i++){
+
+            columnName = sheet.getRow(i).getCell(0).getStringCellValue();
+            if(sheet.getRow(i).getCell(3).getStringCellValue().contains("NN")){nullable = false;}
+            else{nullable = true;}
+            type = sheet.getRow(i).getCell(5).getStringCellValue();
+            lengthValue = sheet.getRow(i).getCell(6).toString();
+
+            Column_ column_ = new Column_(columnName, nullable, type, lengthValue);
+            System.out.println(column_.getModel());
+            System.out.println();
+            columns.add(column_);
+        }
+        for(Column_ c : columns){
+            System.out.println(c.columnName);
+        }
+    }
+
     public XSSFSheet getSheet(int index){
 
         try{
@@ -38,36 +111,7 @@ public class Data {
         }catch (IOException e){
             e.printStackTrace();
         }
-
-
-
         sheet = workbook.getSheetAt(index);
         return sheet;
     }
-
-    public String thisIsColumnName(XSSFSheet sheet){
-        return getSheet(5).getRow(10).getCell(0).getStringCellValue();
-//        return sheet.getRow(9).getCell(0).getStringCellValue();
-    }
-    public boolean thisIsNullabe(XSSFSheet sheet){
-//        if(sheet.getRow(9).getCell(3).getStringCellValue().contains("NN")){
-//            return false;
-//        }else{
-//            return true;
-//        }
-        if(getSheet(5).getRow(11).getCell(3).getStringCellValue().contains("NN")){
-            return false;
-        }else{
-            return true;
-        }
-    }
-    public String thisIsType(XSSFSheet sheet){
-        return getSheet(5).getRow(10).getCell(5).getStringCellValue();
-    }
-    public String thisIsLengthValue(XSSFSheet sheet){
-        return getSheet(5).getRow(10).getCell(6).toString();
-    }
-
-    Column_ column_ = new Column_(thisIsColumnName(sheet), thisIsNullabe(sheet), thisIsType(sheet), thisIsLengthValue(sheet));
-
 }

@@ -2,6 +2,7 @@ package com.avroSchema;
 
 //import com.avroSchema.data.Data;
 //import com.avroSchema.service.Process;
+import com.avroSchema.data.Data;
 import com.avroSchema.service.Process;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,8 +20,10 @@ public class AvroSchemaDataApplication {
 
 	public static void main(String[] args) {
 		String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
-		Process process = new Process();
-		process.process(filePath);
+		Data dt = new Data();
+		dt.eachColData(dt.getSheet(5));
+
+
 
 
 
