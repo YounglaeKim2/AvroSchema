@@ -9,47 +9,55 @@ import java.util.ArrayList;
 public class Data {
 
     public ArrayList<Column_> columns = new ArrayList<Column_>();
+    private String tableName;
+    private String tableNameEng;
 
+    // Data 생성자
     public Data(XSSFSheet sheet){
 
         String columnName;
         boolean nullable;
         String type;
         String lengthValue;
-
-        System.out.println("테이블 한글명 : " + sheet.getRow(6).getCell(2).getStringCellValue());
-        System.out.println("테이블 영문명 : " + sheet.getRow(6).getCell(6).getStringCellValue());
-
+        int cnt = 0;
         for(int i = 9; i < sheet.getPhysicalNumberOfRows(); i++){
 
-            columnName = sheet.getRow(i).getCell(0).getStringCellValue();
-            if(sheet.getRow(i).getCell(3).getStringCellValue().contains("NN")){nullable = false;}
-            else{nullable = true;}
-            type = sheet.getRow(i).getCell(5).getStringCellValue();
-            lengthValue = sheet.getRow(i).getCell(6).toString();
+            try{
+                columnName = sheet.getRow(i).getCell(0).getStringCellValue();
+                if (sheet.getRow(i).getCell(3).getStringCellValue().contains("NN")) {
+                    nullable = false;
+                } else {
+                    nullable = true;
+                }
+                type = sheet.getRow(i).getCell(5).getStringCellValue();
+                lengthValue = sheet.getRow(i).getCell(6).toString();
 
-            Column_ column_ = new Column_(columnName, nullable, type, lengthValue);
-            System.out.println(column_.getModel());
-            System.out.println();
-            columns.add(column_);
+                Column_ column_ = new Column_(columnName, nullable, type, lengthValue);
+                System.out.println(column_.getModel());
+                    columns.add(column_);
+            }
+            catch (NullPointerException e){
+            }
+
         }
-        System.out.println(columns.get(0).columnName.toString());
-        for(Column_ c : columns){
-            System.out.println(c.columnName);
-        }
+        System.out.println(cnt);
+//        System.out.println(columns.get(0).columnName.toString());
+//        for(Column_ c : columns){
+//            System.out.println(c.columnName);
+//        }
     }
+
+    // avroSchema 만들기
     public JSONObject toAvro(XSSFSheet sheet){
         JSONObject avroSchema;
         JSONArray jsonArrayInFields;
         JSONObject jsonObjectForAvroSchema;
-        String tableName;
-        String tableNameEng;
+        tableName = sheet.getRow(6).getCell(2).getStringCellValue();
+        tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();
         // temp for null
         String[] tempString = {"string", "null"};
         String[] tempInt = {"int", "null"};
         String[] tempDouble = {"double", "null"};
-        tableName = sheet.getRow(6).getCell(2).getStringCellValue();
-        tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();
 
         // avroSchema
         avroSchema = new JSONObject();
@@ -79,9 +87,13 @@ public class Data {
             jsonArrayInFields.put(jsonObjectForAvroSchema);
         }
         avroSchema.put("fields",jsonArrayInFields);
+//        System.out.println();
+//        System.out.println(avroSchema);
+//        System.out.println();
         return avroSchema;
     }
 
+    // 내부 클래스 COLUMN_
     public class Column_{
 
         private String columnName;
@@ -125,7 +137,7 @@ public class Data {
         }
 
         public String getModel(){
-            return "칼럼명 : " + this.columnName + " | Null 여부 : " + this.nullable + " | 타입 : " + this.type + " | 길이 : " + this.lengthValue;
+            return "칼럼명 : " + this.columnName + " | Nullable : " + this.nullable + " | 타입 : " + this.type + " | 길이 : " + this.lengthValue;
         }
     }
 }

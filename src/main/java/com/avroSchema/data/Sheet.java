@@ -7,12 +7,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class SheetAt {
+public class Sheet {
 
     public XSSFWorkbook workbook;
     public XSSFSheet sheet;
 
-    public SheetAt(String filePath){
+    // Sheet 생성자
+    public Sheet(String filePath){
         try{
             FileInputStream fileInputStream = new FileInputStream(filePath);
             workbook = new XSSFWorkbook(fileInputStream);
@@ -20,6 +21,7 @@ public class SheetAt {
         }catch (IOException e){e.printStackTrace();}
     }
 
+    // Sheet
     public XSSFSheet getSheetAt(int index){
         sheet = workbook.getSheetAt(index);
         return sheet;
