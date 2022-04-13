@@ -13,12 +13,12 @@ public class Sheet {
     public XSSFSheet sheet;
 
     // Sheet 생성자
-    public Sheet(String filePath){
-        try{
+    public Sheet(String filePath) throws IOException {
+//        try{
             FileInputStream fileInputStream = new FileInputStream(filePath);
             workbook = new XSSFWorkbook(fileInputStream);
-        }catch (FileNotFoundException e){e.printStackTrace();
-        }catch (IOException e){e.printStackTrace();}
+//        }catch (FileNotFoundException e){throw new FileNotFoundException("파일이 없습니다");
+//        }catch (IOException e){e.printStackTrace();}
     }
 
     // Sheet

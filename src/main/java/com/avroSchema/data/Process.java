@@ -2,12 +2,14 @@ package com.avroSchema.data;
 
 import com.avroSchema.SaveFile;
 
+import java.io.IOException;
+
 public class Process {
 
     private Sheet sheet;
     private SaveFile saveFile;
 
-    public Process(){
+    public Process() throws IOException {
 
         final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 
