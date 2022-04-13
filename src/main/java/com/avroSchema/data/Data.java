@@ -16,7 +16,7 @@ public class Data {
 
     public ArrayList<Column_> columns = new ArrayList<Column_>();
 
-    public void eachColData(XSSFSheet sheet){
+    public Data(XSSFSheet sheet){
 
         String columnName;
         boolean nullable;
@@ -36,9 +36,42 @@ public class Data {
             System.out.println();
             columns.add(column_);
         }
+//        System.out.println("tttttttttt");
+//        System.out.println(columns.get(0).columnName.toString());
+//        System.out.println("ttttttttttt");
         for(Column_ c : columns){
             System.out.println(c.columnName);
         }
+    }
+    public void toAvro(){
+        System.out.println("tttttttttt");
+        System.out.println(columns.get(0).columnName.toString());
+        System.out.println("ttttttttttt");
+    }
+    public ArrayList<Column_> eachColData(XSSFSheet sheet){
+
+        String columnName;
+        boolean nullable;
+        String type;
+        String lengthValue;
+
+        for(int i = 9; i < sheet.getPhysicalNumberOfRows(); i++){
+
+            columnName = sheet.getRow(i).getCell(0).getStringCellValue();
+            if(sheet.getRow(i).getCell(3).getStringCellValue().contains("NN")){nullable = false;}
+            else{nullable = true;}
+            type = sheet.getRow(i).getCell(5).getStringCellValue();
+            lengthValue = sheet.getRow(i).getCell(6).toString();
+
+            Column_ column_ = new Column_(columnName, nullable, type, lengthValue);
+            System.out.println(column_.getModel());
+            System.out.println();
+            columns.add(column_);
+        }
+//        for(Column_ c : columns){
+//            System.out.println(c.columnName);
+//        }
+        return columns;
     }
 
     public XSSFSheet getSheet(int index){
