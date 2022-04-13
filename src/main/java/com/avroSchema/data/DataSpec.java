@@ -1,29 +1,24 @@
 package com.avroSchema.data;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class DataSpec {
 
-    public XSSFWorkbook workbook;
-    public XSSFSheet sheet;
-    public final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
+    private Data data;
 
-    public XSSFSheet getSheet(int index){
+    private String tableName;
+    private String tableNameEng;
 
-        try{
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            workbook = new XSSFWorkbook(fileInputStream);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        sheet = workbook.getSheetAt(index);
-        return sheet;
+    public DataSpec(XSSFSheet sheet){
+        setTableName(sheet);
+        setTableNameEng(sheet);
+        data = new Data(sheet);
     }
+
+    // getter setter
+    private void setTableName(XSSFSheet sheet){tableName = sheet.getRow(6).getCell(2).getStringCellValue();}
+    public String getTableName(){return tableName;}
+    private void setTableNameEng(XSSFSheet sheet){tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();}
+    public String getTableNameEng(){return tableNameEng;}
+
 }

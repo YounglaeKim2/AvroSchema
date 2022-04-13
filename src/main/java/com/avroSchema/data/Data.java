@@ -1,22 +1,12 @@
 package com.avroSchema.data;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Data {
-
-    public XSSFWorkbook workbook;
-    public XSSFSheet sheet;
-    public final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
-
-    // temp for null
 
     public ArrayList<Column_> columns = new ArrayList<Column_>();
 
@@ -47,8 +37,6 @@ public class Data {
         for(Column_ c : columns){
             System.out.println(c.columnName);
         }
-
-
     }
     public JSONObject toAvro(XSSFSheet sheet){
         JSONObject avroSchema;
@@ -92,20 +80,6 @@ public class Data {
         }
         avroSchema.put("fields",jsonArrayInFields);
         return avroSchema;
-    }
-
-    public XSSFSheet getSheet(int index){
-
-        try{
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            workbook = new XSSFWorkbook(fileInputStream);
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        sheet = workbook.getSheetAt(index);
-        return sheet;
     }
 
     public class Column_{

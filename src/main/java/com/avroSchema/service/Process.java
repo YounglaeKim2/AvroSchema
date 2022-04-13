@@ -1,6 +1,7 @@
 package com.avroSchema.service;
 
 import com.avroSchema.data.Data;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
@@ -9,28 +10,25 @@ import java.io.IOException;
 
 public class Process {
 
-    public void process(String filePath){
+    public XSSFWorkbook workbook;
+    public XSSFSheet sheet;
+    public final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 
+    public Process(String filePath){
 
+        try{
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            workbook = new XSSFWorkbook(fileInputStream);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
+    }
 
-
-
-
-//        Data dt = new Data();
-//
-////        Data.Column_ dataCol = new Data.Column_(dt.thisIsColumnName(), dt.thisIsNullabe(), dt.thisIsType(), dt.thisIsLengthValue());
-//        try{
-//            FileInputStream fileInputStream = new FileInputStream(filePath);
-//            dt.workbook = new XSSFWorkbook(fileInputStream);
-////            System.out.println(dataCol.columnName);
-////            System.out.println(dataCol.nullable);
-////            System.out.println(dataCol.lengthValue);
-////            System.out.println(dataCol.type);
-//        }catch (FileNotFoundException e){
-//            e.printStackTrace();
-//        }catch (IOException e){
-//            e.printStackTrace();
-//        }
+    public XSSFSheet getSheetAt(int index){
+        sheet = workbook.getSheetAt(index);
+        return sheet;
     }
 }
