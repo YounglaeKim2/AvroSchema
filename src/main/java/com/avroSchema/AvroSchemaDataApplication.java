@@ -42,32 +42,7 @@ public class AvroSchemaDataApplication {
 //			System.out.println("tt");
 //		}
 
-		dt.toAvro();
-
-
-
-
-
-
-
-
-//		XSSFWorkbook workbook;
-//		XSSFSheet sheet;
-
-//		try{
-//			FileInputStream fileInputStream = new FileInputStream(filePath);
-//			workbook = new XSSFWorkbook(fileInputStream);
-//			sheet = workbook.getSheetAt(4);
-//			System.out.println("샘플 샘플 샘플");
-//			System.out.println(sheet.getRow(9).getCell(1).getStringCellValue());
-//			System.out.println("샘플 샘플 샘플");
-//		}catch (FileNotFoundException e){
-//			e.printStackTrace();
-//		}catch (IOException e){
-//			e.printStackTrace();
-//		}
-
-
+		dt.toAvro(dts.sheet);
 
 		SpringApplication.run(AvroSchemaDataApplication.class, args);
 	}

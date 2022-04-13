@@ -2,6 +2,8 @@ package com.avroSchema.data;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,6 +16,8 @@ public class Data {
     public XSSFSheet sheet;
     public final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 
+    // temp for null
+
     public ArrayList<Column_> columns = new ArrayList<Column_>();
 
     public Data(XSSFSheet sheet){
@@ -23,6 +27,9 @@ public class Data {
         String type;
         String lengthValue;
 
+        System.out.println("테이블 한글명 : " + sheet.getRow(6).getCell(2).getStringCellValue());
+        System.out.println("테이블 영문명 : " + sheet.getRow(6).getCell(6).getStringCellValue());
+
         for(int i = 9; i < sheet.getPhysicalNumberOfRows(); i++){
 
             columnName = sheet.getRow(i).getCell(0).getStringCellValue();
@@ -36,42 +43,55 @@ public class Data {
             System.out.println();
             columns.add(column_);
         }
-//        System.out.println("tttttttttt");
-//        System.out.println(columns.get(0).columnName.toString());
-//        System.out.println("ttttttttttt");
+        System.out.println(columns.get(0).columnName.toString());
         for(Column_ c : columns){
             System.out.println(c.columnName);
         }
+
+
     }
-    public void toAvro(){
-        System.out.println("tttttttttt");
-        System.out.println(columns.get(0).columnName.toString());
-        System.out.println("ttttttttttt");
-    }
-    public ArrayList<Column_> eachColData(XSSFSheet sheet){
+    public JSONObject toAvro(XSSFSheet sheet){
+        JSONObject avroSchema;
+        JSONArray jsonArrayInFields;
+        JSONObject jsonObjectForAvroSchema;
+        String tableName;
+        String tableNameEng;
+        // temp for null
+        String[] tempString = {"string", "null"};
+        String[] tempInt = {"int", "null"};
+        String[] tempDouble = {"double", "null"};
+        tableName = sheet.getRow(6).getCell(2).getStringCellValue();
+        tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();
 
-        String columnName;
-        boolean nullable;
-        String type;
-        String lengthValue;
+        // avroSchema
+        avroSchema = new JSONObject();
+        avroSchema.put("type","record");
+        avroSchema.put("namespace","com.meta.datalake");
+        avroSchema.put("name",tableNameEng);
+        // jsonArray in fields
+        jsonArrayInFields = new JSONArray();
+        jsonObjectForAvroSchema = new JSONObject();
 
-        for(int i = 9; i < sheet.getPhysicalNumberOfRows(); i++){
-
-            columnName = sheet.getRow(i).getCell(0).getStringCellValue();
-            if(sheet.getRow(i).getCell(3).getStringCellValue().contains("NN")){nullable = false;}
-            else{nullable = true;}
-            type = sheet.getRow(i).getCell(5).getStringCellValue();
-            lengthValue = sheet.getRow(i).getCell(6).toString();
-
-            Column_ column_ = new Column_(columnName, nullable, type, lengthValue);
-            System.out.println(column_.getModel());
-            System.out.println();
-            columns.add(column_);
+        for(Column_ c : columns){
+            jsonObjectForAvroSchema.put("name",c.columnName);
+            // Not Null 이 아닐 경우
+            if(c.nullable){
+                if(c.type.contains("VARCHAR2")){jsonObjectForAvroSchema.put("type",tempString);}
+                else if(c.type.contains("VARCHAR")){jsonObjectForAvroSchema.put("type",tempString);}
+                else if(c.type.contains("TIMESTAMP")){jsonObjectForAvroSchema.put("type",tempString);}
+                else if(c.lengthValue.contains(",")){jsonObjectForAvroSchema.put("type",tempDouble);}
+                else{jsonObjectForAvroSchema.put("type",tempInt);}
+            }else{
+                if(c.type.contains("VARCHAR2")){jsonObjectForAvroSchema.put("type","string");}
+                else if(c.type.contains("VARCHAR")){jsonObjectForAvroSchema.put("type","string");}
+                else if(c.type.contains("TIMESTAMP")){jsonObjectForAvroSchema.put("type","string");}
+                else if(c.lengthValue.contains(",")){jsonObjectForAvroSchema.put("type","double");}
+                else{jsonObjectForAvroSchema.put("type","int");}
+            }
+            jsonArrayInFields.put(jsonObjectForAvroSchema);
         }
-//        for(Column_ c : columns){
-//            System.out.println(c.columnName);
-//        }
-        return columns;
+        avroSchema.put("fields",jsonArrayInFields);
+        return avroSchema;
     }
 
     public XSSFSheet getSheet(int index){
