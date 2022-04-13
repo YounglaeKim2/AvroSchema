@@ -12,14 +12,24 @@ public class Data {
     private String tableName;
     private String tableNameEng;
 
+    private void setTableName(XSSFSheet sheet){tableName = sheet.getRow(6).getCell(2).getStringCellValue();}
+    public String getTableName(){return tableName;}
+    private void setTableNameEng(XSSFSheet sheet){tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();}
+    public String getTableNameEng(){return tableNameEng;}
+
     // Data 생성자
     public Data(XSSFSheet sheet){
+
+        setTableName(sheet);
+        System.out.println();
+        System.out.println("테이블명(한글) : "+getTableName());
+        setTableNameEng(sheet);
+        System.out.println("테이블명(영어) : "+getTableNameEng());
 
         String columnName;
         boolean nullable;
         String type;
         String lengthValue;
-        int cnt = 0;
         for(int i = 9; i < sheet.getPhysicalNumberOfRows(); i++){
 
             try{
@@ -33,18 +43,20 @@ public class Data {
                 lengthValue = sheet.getRow(i).getCell(6).toString();
 
                 Column_ column_ = new Column_(columnName, nullable, type, lengthValue);
-                System.out.println(column_.getModel());
-                    columns.add(column_);
+
+//                System.out.println(column_.getModel());
+                columns.add(column_);
+                System.out.println(column_.columnName + " | " + column_.nullable + " | " + column_.type + " | " + column_.lengthValue);
             }
             catch (NullPointerException e){
             }
 
         }
-        System.out.println(cnt);
 //        System.out.println(columns.get(0).columnName.toString());
 //        for(Column_ c : columns){
 //            System.out.println(c.columnName);
 //        }
+        toAvro(sheet);
     }
 
     // avroSchema 만들기
@@ -52,8 +64,6 @@ public class Data {
         JSONObject avroSchema;
         JSONArray jsonArrayInFields;
         JSONObject jsonObjectForAvroSchema;
-        tableName = sheet.getRow(6).getCell(2).getStringCellValue();
-        tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();
         // temp for null
         String[] tempString = {"string", "null"};
         String[] tempInt = {"int", "null"};
@@ -87,9 +97,7 @@ public class Data {
             jsonArrayInFields.put(jsonObjectForAvroSchema);
         }
         avroSchema.put("fields",jsonArrayInFields);
-//        System.out.println();
-//        System.out.println(avroSchema);
-//        System.out.println();
+        System.out.println(avroSchema);
         return avroSchema;
     }
 
@@ -136,8 +144,8 @@ public class Data {
             this.lengthValue = lengthValue;
         }
 
-        public String getModel(){
-            return "칼럼명 : " + this.columnName + " | Nullable : " + this.nullable + " | 타입 : " + this.type + " | 길이 : " + this.lengthValue;
-        }
+//        public String getModel(){
+//            return "칼럼명 : " + this.columnName + " | Nullable : " + this.nullable + " | 타입 : " + this.type + " | 길이 : " + this.lengthValue;
+//        }
     }
 }

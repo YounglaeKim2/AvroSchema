@@ -1,29 +1,22 @@
 package com.avroSchema.data;
 
 import com.avroSchema.SaveFile;
-import org.json.simple.JSONObject;
 
 public class Process {
 
-    public static final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
+    private Sheet sheet;
+    private SaveFile saveFile;
 
-    JSONObject jsonAvroSchema;
+    public Process(){
 
-    SaveFile saveFile = new SaveFile();
+        final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 
-    public Process(String path){
-        Sheet pcs = new Sheet(filePath);
-        for(int i = 4; i <pcs.workbook.getNumberOfSheets(); i++){
-            DataSpec dts = new DataSpec(pcs.getSheetAt(i));
-            Data dt = dts.getData();
-            jsonAvroSchema = dt.toAvro(pcs.getSheetAt(i));
-            saveFile.SaveFile(pcs.getSheetAt(i));
+        sheet = new Sheet(filePath);
+        saveFile = new SaveFile();
 
-            System.out.println();
-            System.out.println(dts.getTableNameEng());
-            System.out.println(dt.toAvro(pcs.getSheetAt(i)));
-            System.out.println();
+        for(int i = 4; i<sheet.workbook.getNumberOfSheets();i++){
+            System.out.println(i);
+            saveFile.SaveFile(sheet.getSheetAt(i));
         }
-
     }
 }
