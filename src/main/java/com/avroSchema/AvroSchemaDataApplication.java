@@ -8,7 +8,7 @@ import java.io.IOException;
 @SpringBootApplication
 public class AvroSchemaDataApplication {
 
-    public static final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
+    public static final String filePath = "C:/Users/220209/Desktop/0.서산_테이블정의서_20220413.xlsx";
 
     public static void main(String[] args) {
 
@@ -16,9 +16,9 @@ public class AvroSchemaDataApplication {
             Sheet sheet = new Sheet(filePath);
             FileManager fileManager = new FileManager();
 
-            for (int i = 4; i < sheet.workbook.getNumberOfSheets(); i++) {
-                fileManager.SaveFile(sheet.getSheetAt(i));
-            }
+//            for (int i = 4; i < sheet.workbook.getNumberOfSheets(); i++) {
+                fileManager.SaveFile(sheet.getSheetAt(11));
+//            }
         } catch (IOException e) {
             e.printStackTrace();
         }

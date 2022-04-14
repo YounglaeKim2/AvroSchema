@@ -4,8 +4,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-
 public class DataSpec {
 
     private Data data;

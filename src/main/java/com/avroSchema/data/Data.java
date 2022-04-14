@@ -1,8 +1,6 @@
 package com.avroSchema.data;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.json.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 
@@ -17,7 +15,6 @@ public class Data {
 
     // Data 생성자
     Data(XSSFSheet sheet) {
-        String columnName;
 
         // 몇행인지 한번 보고
         System.out.println();
@@ -27,10 +24,10 @@ public class Data {
             // add method(얕은복사, 주소값 참조) 를 사용하기 때문에 instance 를 새로 만들어 줘야해.
             column_ = new Column_();
             // 엑셀 행 값 가져오지 못하는 경우 continue 해버리기
-            if (sheet.getRow(i) == null || sheet.getRow(i).getCell(0) == null) {continue;}
+            if (sheet.getRow(i) == null || sheet.getRow(i).getCell(0) == null || sheet.getRow(i).getCell(7).getStringCellValue().contains("-")) {continue;}
 
             // 세터를 이용해서 columnName 을 넣어주자
-            column_.setColumnName(sheet.getRow(i).getCell(0).getStringCellValue());
+            column_.setColumnName(sheet.getRow(i).getCell(7).getStringCellValue());
             // nullable
             if (sheet.getRow(i).getCell(3).getStringCellValue().contains("NN")) {column_.setNullable(false);}
             else {column_.setNullable(true);}
@@ -54,14 +51,14 @@ public class Data {
         private String lengthValue;
 
         // 디폴트 생성자
-        Column_(){}
+//        Column_(){}
 
-        Column_(String columnName, boolean nullable, String type, String lengthValue) {
-            this.columnName = columnName;
-            this.nullable = nullable;
-            this.type = type;
-            this.lengthValue = lengthValue;
-        }
+//        Column_(String columnName, boolean nullable, String type, String lengthValue) {
+//            this.columnName = columnName;
+//            this.nullable = nullable;
+//            this.type = type;
+//            this.lengthValue = lengthValue;
+//        }
 
         public String getColumnName() {return columnName;}
         private void setColumnName(String columnName) {this.columnName = columnName;}
