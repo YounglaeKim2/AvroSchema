@@ -8,10 +8,8 @@ import java.io.IOException;
 
 public class Sheet {
 
-
-
-    private XSSFWorkbook workbook;
-    private XSSFSheet sheet;
+    public XSSFWorkbook workbook;
+    public XSSFSheet sheet;
 
     // Sheet 생성자
     public Sheet(String filePath) throws IOException {
@@ -20,7 +18,7 @@ public class Sheet {
     }
 
     // Sheet
-    private XSSFSheet getSheetAt(int index){
+    public XSSFSheet getSheetAt(int index){
         sheet = workbook.getSheetAt(index);
         return sheet;
     }

@@ -1,6 +1,8 @@
 package com.avroSchema.data;
 
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 
@@ -8,12 +10,15 @@ import java.util.ArrayList;
 public class Data {
 
     private Column_ column_;
+
     private ArrayList<Column_> columns = new ArrayList<Column_>();
 
+    public Column_ getColumn_() {return column_;}
     public ArrayList<Column_> getColumns() {return columns;}
 
     // Data 생성자
-    Data(XSSFSheet sheet) {
+    public Data(XSSFSheet sheet) {
+        String columnName;
 
         // 몇행인지 한번 보고
         System.out.println();
@@ -41,8 +46,8 @@ public class Data {
         }
     }
 
-    // 내부 클래스 Column_
-    protected class Column_ {
+    // 내부 클래스 COLUMN_
+    class Column_ {
 
         String columnName;
         boolean nullable;
