@@ -4,9 +4,9 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.json.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
+
 public class DataSpec {
-
-
 
     private Data data;
 
@@ -16,10 +16,13 @@ public class DataSpec {
     public DataSpec(XSSFSheet sheet){
         setTableNameKor(sheet.getRow(6).getCell(2).getStringCellValue());
         setTableNameEng(sheet.getRow(6).getCell(6).getStringCellValue());
+
+
         System.out.println();
         System.out.println("한글테이블명 : "+getTableNameKor());
         System.out.println("영어테이블명 : "+getTableNameEng());
         data = new Data(sheet);
+        toAvro(sheet);
     }
 
     public String getTableNameKor() {return tableNameKor;}
@@ -27,32 +30,40 @@ public class DataSpec {
     public String getTableNameEng() {return tableNameEng;}
     private void setTableNameEng(String tableNameEng) {this.tableNameEng = tableNameEng;}
 
-    //    public JSONObject toAvro(XSSFSheet sheet){
-//        JSONObject avroSchema;
-//        JSONArray jsonArrayInFields;
-//        JSONObject jsonObjectForAvroSchema;
-//        // temp for null
-//        String[] tempString = {"string", "null"};
-//        String[] tempInt = {"int", "null"};
-//        String[] tempDouble = {"double", "null"};
-//        // avroSchema
-//        avroSchema = new JSONObject();
-//        avroSchema.put("type", "record");
-//        avroSchema.put("namespace", "com.meta.datalake");
-////        avroSchema.put("name", tableNameEng);
-//        avroSchema.put("name", tableNameEng);
-//
-//        // jsonArray in fields
-//        jsonArrayInFields = new JSONArray();
-//        jsonObjectForAvroSchema = new JSONObject();
-//
-////        for (Data.Column_ c : data.columns){
-////            jsonObjectForAvroSchema.put("name", c.getColumnName());
-////        }
-//
-//        for(int i = 0; i <data.columns.size(); i++){
-//            jsonObjectForAvroSchema.put("name", )
-//        }
-//
-//    }
+    // Avro Schema 만들기
+    public JSONObject toAvro(XSSFSheet sheet){
+        // avro schema
+        JSONObject avroSchema = new JSONObject();
+        // 3줄 고정
+        avroSchema.put("namespace", "com.meta.datalake");
+        avroSchema.put("name", getTableNameEng());
+        avroSchema.put("type", "record");
+        JSONArray jsonArrayInFields;
+        JSONObject jsonObjectInJsonArray;
+        // temp for null
+        String[] tempString = {"string", "null"};
+        String[] tempInt = {"int", "null"};
+        String[] tempDouble = {"double", "null"};
+
+        // jsonArray in fields
+        jsonArrayInFields = new JSONArray();
+        jsonObjectInJsonArray = new JSONObject();
+        for(int i = 0; i < data.getColumns().size(); i++){
+            jsonObjectInJsonArray.put("name", data.getColumns().get(i).columnName);
+            if(data.getColumns().get(i).nullable){
+                if(data.getColumns().get(i).lengthValue.contains(",")){jsonObjectInJsonArray.put("type", tempDouble);}
+                if(data.getColumns().get(i).type.contains("NUMBER")){jsonObjectInJsonArray.put("type", tempInt);}
+                else{jsonObjectInJsonArray.put("type", tempString);}
+            } else {
+                if(data.getColumns().get(i).lengthValue.contains(",")){jsonObjectInJsonArray.put("type", "double");}
+                if(data.getColumns().get(i).type.contains("NUMBER")){jsonObjectInJsonArray.put("type", "int");}
+                else{jsonObjectInJsonArray.put("type", "string");}
+            }
+            jsonArrayInFields.put(jsonObjectInJsonArray);
+        }
+        avroSchema.put("fields", jsonArrayInFields);
+        System.out.println("Avro Schema 입니다");
+        System.out.println(avroSchema);
+        return avroSchema;
+    }
 }
