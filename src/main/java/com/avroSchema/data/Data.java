@@ -41,17 +41,17 @@ public class Data {
 
             // columns 에 넣어준다
             columns.add(i-9,column_);
-            System.out.println(i+1 +"행 : " + columns.get(i-9).columnName + " | " + columns.get(i-9).nullable + " | " + columns.get(i-9).type + " | " +columns.get(i-9).lengthValue);
+            System.out.println(i+1 +"행 : " + columns.get(i-9).getColumnName() + " | " + columns.get(i-9).getNullable() + " | " + columns.get(i-9).getType() + " | " +columns.get(i-9).getLengthValue());
         }
     }
 
     // 내부 클래스 COLUMN_
-    class Column_ {
+    public class Column_ {
 
-        String columnName;
-        boolean nullable;
-        String type;
-        String lengthValue;
+        private String columnName;
+        private boolean nullable;
+        private String type;
+        private String lengthValue;
 
         // 디폴트 생성자
         Column_(){}

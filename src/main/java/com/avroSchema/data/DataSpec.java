@@ -48,14 +48,14 @@ public class DataSpec {
         jsonArrayInFields = new JSONArray();
         jsonObjectInJsonArray = new JSONObject();
         for(int i = 0; i < data.getColumns().size(); i++){
-            jsonObjectInJsonArray.put("name", data.getColumns().get(i).columnName);
-            if(data.getColumns().get(i).nullable){
-                if(data.getColumns().get(i).lengthValue.contains(",")){jsonObjectInJsonArray.put("type", tempDouble);}
-                if(data.getColumns().get(i).type.contains("NUMBER")){jsonObjectInJsonArray.put("type", tempInt);}
+            jsonObjectInJsonArray.put("name", data.getColumns().get(i).getColumnName());
+            if(data.getColumns().get(i).getNullable()){
+                if(data.getColumns().get(i).getLengthValue().contains(",")){jsonObjectInJsonArray.put("type", tempDouble);}
+                if(data.getColumns().get(i).getType().contains("NUMBER")){jsonObjectInJsonArray.put("type", tempInt);}
                 else{jsonObjectInJsonArray.put("type", tempString);}
             } else {
-                if(data.getColumns().get(i).lengthValue.contains(",")){jsonObjectInJsonArray.put("type", "double");}
-                if(data.getColumns().get(i).type.contains("NUMBER")){jsonObjectInJsonArray.put("type", "int");}
+                if(data.getColumns().get(i).getLengthValue().contains(",")){jsonObjectInJsonArray.put("type", "double");}
+                if(data.getColumns().get(i).getType().contains("NUMBER")){jsonObjectInJsonArray.put("type", "int");}
                 else{jsonObjectInJsonArray.put("type", "string");}
             }
             jsonArrayInFields.put(jsonObjectInJsonArray);

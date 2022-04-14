@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.Arrays;
 
-public class SaveFile {
+public class FileManager {
 
     File dir = new File("../");
     String[] filenames;
