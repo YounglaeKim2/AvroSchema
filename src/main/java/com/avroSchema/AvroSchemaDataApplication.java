@@ -15,7 +15,7 @@ public class AvroSchemaDataApplication {
 
 	public static void main(String[] args) throws IOException {
 		Sheet sheet = new Sheet(filePath);
-		DataSpec dataSpec = new DataSpec(sheet.getSheetAt(5));
+//		DataSpec dataSpec = new DataSpec(sheet.getSheetAt(5));
 //		try {
 //			Process process = new Process();
 //		} catch (IOException e) {
