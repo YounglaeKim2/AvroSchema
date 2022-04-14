@@ -126,10 +126,10 @@ public class Data {
         String type;
         String lengthValue;
 
-        // 디폴트 생성자를 만들어줬어
+        // 디폴트 생성자
         Column_(){}
 
-         Column_(String columnName, boolean nullable, String type, String lengthValue) {
+        Column_(String columnName, boolean nullable, String type, String lengthValue) {
             this.columnName = columnName;
             this.nullable = nullable;
             this.type = type;

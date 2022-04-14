@@ -1,34 +1,33 @@
-//package com.avroSchema.data;
-//
-//import org.apache.poi.xssf.usermodel.XSSFSheet;
-//import org.json.JSONArray;
-//import org.json.simple.JSONObject;
-//
-//public class DataSpec {
-//
-//    private Data data;
-//
-//    private String tableName;
-//    private String tableNameEng;
-//
-//    public DataSpec(XSSFSheet sheet){
-////        setTableName(sheet);
-////        setTableNameEng(sheet);
-//        data = new Data(sheet);
-//        getData();
-//        tableName = data.getTableName();
-//        tableNameEng = data.getTableNameEng();
-//        data.getColumn_();
-//    }
-////    private void setTableName(XSSFSheet sheet){tableName = sheet.getRow(6).getCell(2).getStringCellValue();}
-////    private void setTableNameEng(XSSFSheet sheet){tableNameEng = sheet.getRow(6).getCell(6).getStringCellValue();}
-////    public String getTableNameEng(){return tableNameEng;}
-//
-//    public Data getData() {
-//        return data;
-//    }
-//
-//    public JSONObject toAvro(XSSFSheet sheet){
+package com.avroSchema.data;
+
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.json.JSONArray;
+import org.json.simple.JSONObject;
+
+public class DataSpec {
+
+
+
+    private Data data;
+
+    private String tableNameKor;
+    private String tableNameEng;
+
+    public DataSpec(XSSFSheet sheet){
+        setTableNameKor(sheet.getRow(6).getCell(2).getStringCellValue());
+        setTableNameEng(sheet.getRow(6).getCell(6).getStringCellValue());
+        System.out.println();
+        System.out.println("한글테이블명 : "+getTableNameKor());
+        System.out.println("영어테이블명 : "+getTableNameEng());
+        data = new Data(sheet);
+    }
+
+    public String getTableNameKor() {return tableNameKor;}
+    private void setTableNameKor(String tableNameKor) {this.tableNameKor = tableNameKor;}
+    public String getTableNameEng() {return tableNameEng;}
+    private void setTableNameEng(String tableNameEng) {this.tableNameEng = tableNameEng;}
+
+    //    public JSONObject toAvro(XSSFSheet sheet){
 //        JSONObject avroSchema;
 //        JSONArray jsonArrayInFields;
 //        JSONObject jsonObjectForAvroSchema;
@@ -56,4 +55,4 @@
 //        }
 //
 //    }
-//}
+}

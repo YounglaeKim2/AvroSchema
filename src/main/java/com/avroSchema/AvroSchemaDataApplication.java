@@ -2,6 +2,7 @@ package com.avroSchema;
 
 //import com.avroSchema.data.Process;
 import com.avroSchema.data.Data;
+import com.avroSchema.data.DataSpec;
 import com.avroSchema.data.Sheet;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,7 +15,7 @@ public class AvroSchemaDataApplication {
 
 	public static void main(String[] args) throws IOException {
 		Sheet sheet = new Sheet(filePath);
-		Data data = new Data(sheet.getSheetAt(5));
+		DataSpec dataSpec = new DataSpec(sheet.getSheetAt(5));
 //		try {
 //			Process process = new Process();
 //		} catch (IOException e) {
