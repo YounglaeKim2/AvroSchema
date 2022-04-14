@@ -13,11 +13,10 @@ public class Data {
 
     private ArrayList<Column_> columns = new ArrayList<Column_>();
 
-    public Column_ getColumn_() {return column_;}
     public ArrayList<Column_> getColumns() {return columns;}
 
     // Data 생성자
-    public Data(XSSFSheet sheet) {
+    Data(XSSFSheet sheet) {
         String columnName;
 
         // 몇행인지 한번 보고

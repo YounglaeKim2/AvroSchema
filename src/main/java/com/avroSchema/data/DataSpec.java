@@ -22,7 +22,6 @@ public class DataSpec {
         System.out.println("한글테이블명 : "+getTableNameKor());
         System.out.println("영어테이블명 : "+getTableNameEng());
         data = new Data(sheet);
-        toAvro(sheet);
     }
 
     public String getTableNameKor() {return tableNameKor;}

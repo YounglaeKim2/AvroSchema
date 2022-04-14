@@ -1,8 +1,5 @@
 package com.avroSchema;
 
-//import com.avroSchema.data.Process;
-import com.avroSchema.data.Data;
-import com.avroSchema.data.DataSpec;
 import com.avroSchema.data.Sheet;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,14 +10,15 @@ public class AvroSchemaDataApplication {
 
 	public static final String filePath = "C:/Users/220209/Desktop/서산_테이블정의서_20220315.xlsx";
 
-	public static void main(String[] args) throws IOException {
-		Sheet sheet = new Sheet(filePath);
-		DataSpec dataSpec = new DataSpec(sheet.getSheetAt(5));
-//		try {
-//			Process process = new Process();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+	public static void main(String[] args){
 
+		try{
+			Sheet sheet = new Sheet(filePath);
+			SaveFile saveFile = new SaveFile();
+
+			for(int i = 4; i<sheet.workbook.getNumberOfSheets();i++){
+				saveFile.SaveFile(sheet.getSheetAt(i));
+			}
+		}catch (IOException e){e.printStackTrace();}
 	}
 }
