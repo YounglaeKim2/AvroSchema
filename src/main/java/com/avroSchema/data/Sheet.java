@@ -4,7 +4,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Sheet {
@@ -14,11 +13,8 @@ public class Sheet {
 
     // Sheet 생성자
     public Sheet(String filePath) throws IOException {
-//        try{
-            FileInputStream fileInputStream = new FileInputStream(filePath);
-            workbook = new XSSFWorkbook(fileInputStream);
-//        }catch (FileNotFoundException e){throw new FileNotFoundException("파일이 없습니다");
-//        }catch (IOException e){e.printStackTrace();}
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        workbook = new XSSFWorkbook(fileInputStream);
     }
 
     // Sheet
